@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <span class="logo" routerLink="" routerLinkActive="active">Movie Rating</span>
+  <span class="example-spacer"></span>
+  <nav>
+    @if(authService.user()){
+      <span class="header-name">Hello {{authService.user()?.email}}</span>
+    }
+    <button mat-raised-button routerLink="/movies">Movies<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="movie"></mat-icon></button>
+    @if(authService.user()){
+      <button (click)="logout()" mat-raised-button routerLink="/">Logout<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="logout"></mat-icon></button>
+    }
+    @if(authService.user() === null){
+      <button mat-raised-button routerLink="/login">Login<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="login"></mat-icon></button>
+      <button mat-raised-button routerLink="/register">Register</button>
+    }
+  </nav>
+</mat-toolbar>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+

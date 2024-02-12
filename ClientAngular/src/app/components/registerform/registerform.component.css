@@ -1,0 +1,21 @@
+form{
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-header{
+  font-size: x-large;
+  margin-bottom: 1em;
+}
+
+span{
+  color: red;
+  margin-bottom: 5px;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+mat-form-field{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

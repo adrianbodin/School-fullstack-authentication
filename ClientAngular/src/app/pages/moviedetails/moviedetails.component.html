@@ -1,0 +1,87 @@
+<section *ngIf="movie$ | async as movie">
+  <h1>{{movie.title}}</h1>
+
+  <h3>{{movie.releaseYear}}</h3>
+
+  <h4>Reviews:</h4>
+
+  <div class="review-container">
+    <div class="reviews-container">
+    @for(review of movie.reviews; track review.id){
+      <mat-card>
+          <mat-card-header>
+            {{review.grade}}/5 : {{review.username}}
+          </mat-card-header>
+          <mat-card-content>
+            {{review.comment}}
+          </mat-card-content>
+        <mat-card-actions>
+          @if(authService.user() && authService.user()?.email === review.username){
+            <button class="edit-review-button" (click)="editReview(review)" mat-raised-button>
+              Edit <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
+            </button>
+          }
+          @if(authService.user() && authService.user()?.email === review.username){
+            <button class="delete-review-button" (click)="deleteReview(review.id)" mat-raised-button color="warn">
+              Delete <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+            </button>
+          }
+        </mat-card-actions>
+      </mat-card>
+    }
+      </div>
+    @if(authService.user()){
+
+      <mat-card class="form-card" *ngIf="!showHideEditForm">
+        <mat-card-header>Add Review</mat-card-header>
+        <mat-card-content>
+          <form  [formGroup]="addReviewForm" (ngSubmit)="submitReviewForm()">
+            <mat-form-field>
+              <mat-label>Grade</mat-label>
+              <input type="number" formControlName="grade" matInput>
+              @if(addReviewForm.controls.grade.invalid && (addReviewForm.controls.grade.dirty || addReviewForm.controls.grade.touched)){
+                <mat-error>Grade has to be from 1-5</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Comment</mat-label>
+              <textarea matInput placeholder="The best movie ever..." type="number" formControlName="comment"></textarea>
+              @if(addReviewForm.controls.comment.invalid && (addReviewForm.controls.comment.dirty || addReviewForm.controls.comment.touched)){
+                <mat-error>Comment can max be 100 characters</mat-error>
+              }
+            </mat-form-field>
+            <mat-card-actions class="add-review-form-button-div">
+              <button type="submit" mat-raised-button color="primary">Add Review</button>
+            </mat-card-actions>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="form-card" *ngIf="showHideEditForm">
+        <mat-card-header>Edit Review</mat-card-header>
+        <mat-card-content>
+          <form  [formGroup]="editReviewForm" (ngSubmit)="submitReviewForm()">
+            <mat-form-field>
+              <mat-label>Grade</mat-label>
+              <input type="number" formControlName="grade" matInput>
+              @if(addReviewForm.controls.grade.invalid && (addReviewForm.controls.grade.dirty || addReviewForm.controls.grade.touched)){
+                <mat-error>Grade has to be from 1-5</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Comment</mat-label>
+              <textarea matInput placeholder="The best movie ever..." type="number" formControlName="comment"></textarea>
+              @if(addReviewForm.controls.comment.invalid && (addReviewForm.controls.comment.dirty || addReviewForm.controls.comment.touched)){
+                <mat-error>Comment can max be 100 characters</mat-error>
+              }
+            </mat-form-field>
+            <mat-card-actions class="add-review-form-button-div">
+              <button type="submit" (click)="submitEditForm()" mat-raised-button color="primary">Edit Review</button>
+              <button type="submit" (click)="showEditForm()" mat-raised-button>Cancel</button>
+            </mat-card-actions>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</section>
