@@ -1,0 +1,31 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+nav{
+  display: flex;
+  gap: 1rem;
+}
+
+.logo{
+  cursor: pointer;
+}
+
+.container{
+  padding: 0 10em 0 10em;
+
+  max-width: 2000px;
+
+  @media(max-width: 600px) {
+    padding: 0 1em 0 1em;
+  }
+  @media(min-width: 600px) and (max-width: 1000px){
+    padding: 0 5em 0 5em
+  }
+}
+
+.header-name{
+  @media (max-width: 1000px) {
+    display: none;
+  }
+}

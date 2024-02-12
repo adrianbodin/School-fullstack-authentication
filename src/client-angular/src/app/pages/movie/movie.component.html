@@ -1,0 +1,72 @@
+@if(authService.user()){
+  @if(!openAddForm && !openEditForm){
+    <button class="add-movie-button" (click)="openAddForm = true" mat-raised-button>Add Movie</button>
+  }
+}
+<mat-card *ngIf="openAddForm">
+  <mat-card-header>Add Movie</mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="addMovieForm" (ngSubmit)="submitAddForm()">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input type="text" formControlName="title" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Release Year</mat-label>
+        <input type="number" formControlName="releaseYear" matInput>
+        @if(addMovieForm.controls.releaseYear.invalid && (addMovieForm.controls.releaseYear.dirty || addMovieForm.controls.releaseYear.touched)){
+          <mat-error>The release year has to be from 1900-2024</mat-error>
+        }
+      </mat-form-field>
+      <mat-card-actions class="add-movie-form-button-div">
+        <button type="submit" mat-raised-button color="primary">Add Movie</button>
+        <button mat-raised-button (click)="openAddForm = false">Cancel</button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="openEditForm">
+  <mat-card-header>Edit Movie</mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="addMovieForm" (ngSubmit)="submitEditForm()">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input type="text" value="" formControlName="title" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Release Year</mat-label>
+        <input type="number" formControlName="releaseYear" matInput>
+        @if(addMovieForm.controls.releaseYear.invalid && (addMovieForm.controls.releaseYear.dirty || addMovieForm.controls.releaseYear.touched)){
+          <mat-error>The release year has to be from 1900-2024</mat-error>
+        }
+      </mat-form-field>
+      <mat-card-actions class="add-movie-form-button-div">
+        <button type="submit" mat-raised-button color="primary">Edit Movie</button>
+        <button mat-raised-button (click)="removeEditForm()">Cancel</button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<section>
+   <mat-card *ngFor="let movie of movies$ | async">
+     <mat-card-header>{{movie.title}}</mat-card-header>
+     <mat-card-content>{{movie.releaseYear}}</mat-card-content>
+     <mat-card-actions>
+       <button routerLink="/movies/{{movie.id}}" mat-raised-button color="primary">
+         Details<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_forward"></mat-icon>
+       </button>
+       @if(authService.user()){
+         <button mat-raised-button (click)="displayEditForm(movie)">
+           Edit<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
+         </button>
+       }
+       @if(authService.user()){
+         <button mat-raised-button color="warn" (click)="deleteMovie(movie.id)">
+           Delete<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+         </button>
+       }
+     </mat-card-actions>
+   </mat-card>
+</section>
